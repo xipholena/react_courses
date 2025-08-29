@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // Мова, в яку компілюється код
+    "module": "ESNext",
+    "strict": true,
+    "jsx": "react-jsx", // Для JSX
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist", // Куди зберігати скомпільований код
+    "baseUrl": "./src", // Базова директорія для імпортів
+    "resolveJsonModule": true
+  },
+  "include": ["src"], // Директорія з кодом
+  "exclude": ["node_modules"] // Виключені файли
+}
