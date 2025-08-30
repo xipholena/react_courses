@@ -1,11 +1,14 @@
 import {Course} from "../types";
+import {useState} from "react";
+import Modal from "../../common/components/Modal";
+import VideoModal from "./VideoModal";
 
 type CourseCardProps  = {
     course: Course;
-    //onBuy: (courseId: number) => void;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
+    const [showModal, setShowModal] = useState(false);
     const handlePurchase = (courseId: number) => {
         alert(`Куплено курс з id: ${courseId}`);
     };
@@ -15,12 +18,16 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             <p>{course.description}</p>
             <p>Ціна: {course.price} ₴</p>
 
-            {/* Відео: HTML5 video */}
-            <video width="320" height="180" controls>
-                {/*<source src={course.videoUrl} type={course.videoUrl.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegURL'} />*/}
-                {/*Ваш браузер не підтримує відтворення відео.*/}
-            </video>
+            <button onClick={() => setShowModal(true)}>
+               Дивитись відео
+            </button>
 
+            <Modal showModal={showModal}>
+                <VideoModal
+                    onClose={() => setShowModal(false)}
+                    src={course?.videoUrl}
+                />,
+            </Modal>
             <button onClick={()=> handlePurchase(course.id)}>
                 Купити
             </button>

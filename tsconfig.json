@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES6", // Мова, в яку компілюється код
+    "target": "ES6",
     "module": "ESNext",
     "strict": true,
-    "jsx": "react-jsx", // Для JSX
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist", // Куди зберігати скомпільований код
-    "baseUrl": "./src", // Базова директорія для імпортів
+    "outDir": "./dist",
+    "baseUrl": "./src",
     "resolveJsonModule": true
   },
-  "include": ["src"], // Директорія з кодом
-  "exclude": ["node_modules"] // Виключені файли
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
