@@ -1,7 +1,7 @@
 import {css, keyframes} from '@emotion/react'
 import {AppTheme} from "../../theme";
 import {useEffect, useMemo} from "react";
-
+import Button from "./Button";
 
 const fadeIn = keyframes({
     from: { opacity: 0, transform: "scale(0.95)" },
@@ -13,7 +13,7 @@ const modalOverlay = (theme: AppTheme) => css({
     left: 0,
     width: "100vw",
     height: "100vh",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: theme.colors.primary.black,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -21,40 +21,30 @@ const modalOverlay = (theme: AppTheme) => css({
     animation: `${fadeIn} 0.3s ease-out`
 })
 
-const modal = css({
-    backgroundColor: "#ffbaba",
-    padding: "20px 30px",
-    borderRadius: "12px",
-    border: "1px solid #910000",
+const modal = (theme: AppTheme) => css({
+    backgroundColor:  theme.colors.primary.white,
+    padding: `${theme.spacing*5}px ${theme.spacing*6}px`,
+    borderRadius: theme.spacing*3,
+    border: `1px solid ${theme.colors.primary.black}`,
     boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-    maxWidth: "400px",
+    maxWidth: theme.spacing*100,
     width: "90%",
     textAlign: "center",
     animation: `${fadeIn} 0.3s ease-out`
 })
 
-const modalTitle = css({
-    marginBottom: "20px",
-    fontSize: "18px",
+const modalTitle = (theme: AppTheme) => css({
+    marginBottom: theme.spacing*5,
+    fontSize: theme.spacing*5,
     fontWeight: 500
 })
-
-const modalButton  = css({
-    padding: "10px 20px",
-    borderRadius: "8px",
-    border: "none",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    cursor: "pointer",
-    fontSize: "16px"
-})
-
 
 type Props = {
     onClose: () => void;
     error: Error | null | unknown
 }
 
+// Щоб протестувати, я додала на покупку курсу throw new Error('Purchase failed');
 const ErrorModal = ({ onClose, error}:Props) => {
 
     const errorMessage = useMemo(() => {
@@ -84,7 +74,7 @@ const ErrorModal = ({ onClose, error}:Props) => {
             <div css={modal} onClick={(e) => e.stopPropagation()} >
                 <p css={modalTitle}>Щось пішло не за  планом...</p>
                 <p>{errorMessage}</p>
-                <button css={modalButton} onClick={onClose}>Close</button>
+                <Button onClick={onClose}>Close</Button>
             </div>
         </div>
 

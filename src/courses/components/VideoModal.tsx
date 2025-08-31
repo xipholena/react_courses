@@ -1,6 +1,6 @@
 import {css, keyframes} from '@emotion/react'
 import {AppTheme} from "../../theme";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {addPauseInfo} from "../slices/courseSlice";
 import {RootState} from "../../store";
@@ -23,33 +23,45 @@ const modalOverlay = (theme: AppTheme) => css({
     animation: `${fadeIn} 0.3s ease-out`
 })
 
-const modal = css({
-    backgroundColor: "#fff",
-    padding: "20px 30px",
-    borderRadius: "12px",
+const modal = (theme: AppTheme) => css({
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    rowGap: theme.spacing*4,
+    backgroundColor: theme.colors.primary.white,
+    padding: `${theme.spacing*5}px ${theme.spacing*7.5}px`,
+    borderRadius: theme.spacing*3,
     boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-    maxWidth: "400px",
+    maxWidth: theme.spacing*100,
     width: "90%",
     textAlign: "center",
-    animation: `${fadeIn} 0.3s ease-out`
+    animation: `${fadeIn} 0.3s ease-out`,
+    [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+        maxWidth: theme.spacing*150,
+    },
+    [`@media (min-width: ${theme.breakpoints.lg}px)`]: {
+        maxWidth: theme.spacing*200,
+    },
+    [`@media (min-width: ${theme.breakpoints.xl}px)`]: {
+        maxWidth: theme.spacing*300,
+    },
 })
 
-const modalTitle = css({
-    marginBottom: "20px",
-    fontSize: "18px",
+const modalTitle =  (theme: AppTheme) => css({
+    marginBottom: theme.spacing*5,
+    fontSize: theme.spacing*4.5,
     fontWeight: 500
 })
 
-const modalButton  = css({
-    padding: "10px 20px",
-    borderRadius: "8px",
+const modalButton = (theme: AppTheme) => css({
+    padding: `${theme.spacing*2.5}px ${theme.spacing*5}px`,
+    borderRadius: theme.spacing*2,
     border: "none",
     backgroundColor: "#007bff",
     color: "#fff",
     cursor: "pointer",
-    fontSize: "16px"
+    fontSize: theme.spacing*4
 })
-
 
 type Props = {
     onClose: () => void;
@@ -102,7 +114,7 @@ const  VideoModal = ({ onClose, src, courseId }:Props) => {
         <div  css={modalOverlay} onClick={handleTimeUpdate}>
             <div css={modal} onClick={(e) => e.stopPropagation()} >
                 <p css={modalTitle}>Приємнного перегляду!</p>
-                    <video ref={videoRef} width="320" height="180" controls>
+                    <video ref={videoRef} controls>
                         <source src={src} type="video/mp4"  />
                         Ваш браузер не підтримує відтворення відео.
                     </video>
