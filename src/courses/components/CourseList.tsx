@@ -5,11 +5,14 @@ type Props = {
     courses: Course[];
 }
 const CourseList = ({ courses }: Props) => {
+
     return (
         <div>
-            {courses.map(course => (
-                <CourseCard key={course.id} course={course} /*onBuy={handlePurchase}*/ />
-            ))}
+            {courses
+                ? courses.map(course => (
+                <CourseCard key={course.id} course={course} />
+            ))
+                : 'No courses found'}
         </div>
     );
 };

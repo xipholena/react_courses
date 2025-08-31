@@ -5,7 +5,7 @@ type Props = {
     showModal: boolean;
     children: ReactNode;
 }
-const Modal = ({showModal, children}: Props) => {
+const Portal = ({showModal, children}: Props) => {
     return (
         showModal && createPortal(
             children,
@@ -14,4 +14,4 @@ const Modal = ({showModal, children}: Props) => {
     )
 }
 
-export default Modal;
+export default Portal;

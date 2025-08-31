@@ -1,7 +1,9 @@
-import "../styles/index.css";
 import {css, keyframes} from '@emotion/react'
 import {AppTheme} from "../../theme";
-import {RefObject, useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {addPauseInfo} from "../slices/courseSlice";
+import {RootState} from "../../store";
 
 const fadeIn = keyframes({
     from: { opacity: 0, transform: "scale(0.95)" },
@@ -52,15 +54,18 @@ const modalButton  = css({
 type Props = {
     onClose: () => void;
     src: string;
+    courseId: number;
 }
 
-const  VideoModal = ({ onClose, src }:Props) => {
+const  VideoModal = ({ onClose, src, courseId }:Props) => {
+    const pausedAt = useAppSelector((state: RootState) => state.coursesState.pausedAt);
+    const timing = pausedAt.find(item => item?.courseId === courseId)?.value ?? 0
+    const dispatch = useAppDispatch();
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const [currentTime, setCurrentTime] = useState(0);
 
     const handleTimeUpdate = useCallback(() => {
         if (videoRef.current) {
-            console.log(videoRef.current?.currentTime)
+            dispatch(addPauseInfo({courseId: courseId, value: videoRef.current?.currentTime}))
         }
         onClose()
     }, [videoRef]);
@@ -71,20 +76,27 @@ const  VideoModal = ({ onClose, src }:Props) => {
                 handleTimeUpdate();
             }
         };
-
         window.addEventListener("keydown", handleEsc);
+
         return () => {
             window.removeEventListener("keydown", handleEsc);
         };
-    }, [onClose]);
+    }, [handleTimeUpdate]);
 
+
+    //Повертаю в останню переглянуту секунду
     useEffect(() => {
-        if (videoRef.current) {
-            console.log(videoRef.current?.currentTime)
-        }
-    }, [videoRef]);
+        const video = videoRef.current;
+        if (!video) return;
 
+        const handleLoaded = () => {
+            video.currentTime = timing;
+        };
 
+        video.addEventListener("loadedmetadata", handleLoaded);
+
+        return () => video.removeEventListener("loadedmetadata", handleLoaded);
+    }, [timing]);
 
     return (
         <div  css={modalOverlay} onClick={handleTimeUpdate}>

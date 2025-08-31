@@ -1,8 +1,5 @@
 
 export const theme = {
-    colors: {
-        primary: 'hotpink'
-    },
     zInexes: {
         base: 0,
         dropdown: 100,
